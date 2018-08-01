@@ -1,0 +1,8 @@
+logs/*
+!.gitkeep
+node_modules/
+e2e-tests/
+tmp
+.DS_Store
+.idea
+/app/assets/js/constants.js

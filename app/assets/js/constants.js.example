@@ -1,0 +1,4 @@
+(function () {
+    angular.module('koboG.constants', [])
+    .constant('API_URL', 'http://url-del-sitio/api/')
+})();
