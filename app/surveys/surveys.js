@@ -17,7 +17,7 @@ angular.module('koboG')
         }
         $scope.showAllCharts = false;
         $scope.cont = 0;
-        //Chart.defaults.global.colors = [ '#803690', '#00ADF9', '#949FB1', '#46BFBD', '#FDB45C', '#DCDCDC', '#4D5360'];
+        Chart.defaults.global.colors = [ '#2c3571', '#00ADF9', '#46BFBD', '#647b60', '#949FB1', '#4D5360' ,'#FDB45C', '#DCDCDC', '#d4701c'];
 
         Chart.plugins.register({
             beforeDraw: function (chartInstance) {//make the background color of the canvas white, for image download
@@ -98,7 +98,6 @@ angular.module('koboG')
         }
 
         $scope.toogleTooltips = function () {
-            //console.log($scope);
             if ($scope.options.showAllTooltips) {
                 $scope.options.showAllTooltips = false;
             }else{
@@ -110,6 +109,7 @@ angular.module('koboG')
             $scope.showAllCharts = false;
             if (question) {
                 apiService.api.get('question/' + question.id + '/' + $stateParams.id).then(function (res) {
+                    $scope.question = res;
                     if (res.data.utilities.stacked && !res.data.utilities.priority) {
                         $scope.data = res.data.values;
                         $scope.labels = res.data.labels;
@@ -133,6 +133,7 @@ angular.module('koboG')
                     $scope.utilities = res.data.utilities;
                     $scope.questionRespondents = res.data.respondent;
                     $scope.options = graphService.options(question, res.data.utilities);
+                    console.log($scope);
                 });
             }
             //console.log($scope);

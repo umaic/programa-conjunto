@@ -17,9 +17,33 @@ angular.module('koboG')
             getData();
             angular.extend($scope, {
                 center: {
-                    lat: 6.33236022397594,
-                    lng: -75.55709838867188,
-                    zoom: 7
+                    lat: 7.0780151,
+                    lng: -73.1163446,
+                    zoom: 10
+                },
+                tiles: {
+                    //url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                    //url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+                },
+                layers: {
+                    baselayers: {
+                        hot: {
+                            name: 'Humanitariam',
+                            url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+                            type: 'xyz'
+                        },
+                        osm: {
+                            name: 'OpenStreetMap',
+                            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            type: 'xyz'
+                        },
+                        rm: {
+                            name: 'Relief Map',
+                            url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                            type: 'xyz'
+                        },                        
+                    }
                 },
                 position: {
                     lat: 51,
