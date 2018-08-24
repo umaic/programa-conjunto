@@ -6304,7 +6304,7 @@ L.Icon.Default = L.Icon.extend({
 
 	_getIconUrl: function (name) {
 
-		L.Icon.Default.imagePath = this._detectIconPath();
+		L.Icon.Default.imagePath = 'images/';
 
 		// @option imagePath: String
 		// `L.Icon.Default` will try to auto-detect the absolute location of the

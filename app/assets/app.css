@@ -1,5 +1,17 @@
 /* app css stylesheet */
 
+body{
+    background-color: #efefef;
+}
+
+footer{
+    margin-top: 50px;
+}
+
+.center-block{
+    float: none;
+}
+
 .menu {
     list-style: none;
     border-bottom: 0.1em solid black;

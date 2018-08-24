@@ -8,20 +8,18 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-top: 20px">
     <div class="col-lg-12">
-        <uib-tabset active="active" justified="true">
-            <uib-tab index="0" heading="Preguntas Individuales">
-                <form name="formSurvey" class="col-lg-12" style="padding: 0">
-                    <div class="form-group col-lg-2">
-                        <select class="form-control" ng-model='$parent.$parent.topic'
+        <form name="formSurvey" class="col-lg-12" style="padding: 0">
+                    <div class="form-group col-lg-4 center-block">
+                        <select class="form-control" ng-model='topic'
                                 ng-options="item as item.name for item in topics"
                                 ng-change="check()">
                             <option value="">Seleccione un área</option>
                         </select>
                     </div>
-                    <div ng-if="topic.questions" class="form-group col-lg-10">
-                        <select class="form-control" ng-model='$parent.$parent.$parent.question'
+                    <div ng-if="topic.questions" class="form-group col-lg-12">
+                        <select class="form-control" ng-model='question'
                                 ng-options="item as item.text.text for item in topic.questions"
                                 ng-change="getGraphData(question)">
                             <option value="">Seleccione una pregunta</option>
@@ -30,158 +28,60 @@
                 </form>
 
                 <div ng-if="question" class="row">
-                    <div class="col-lg-4">
-                        <h2><span class="label label-success">Total encuestados: {{questionRespondents}}</span></h2>
-                    </div>
-                    <div class="col-lg-3 pull-right">
-                        <h2><button type="button" class="btn btn-info" ng-if="!options.showAllTooltips" ng-click="toogleTooltips()">Mostrar siempre etiquetas en gráfica</button></h2>
-                        <h2><button type="button" class="btn btn-info" ng-if="options.showAllTooltips" ng-click="toogleTooltips()">No mostrar siempre etiquetas en gráfica</button></h2>
-                    </div>
-                </div>
-
-                <div ng-if="question && !utilities.pie  && utilities.stacked" class="row">
-                    <div id="chartKOBO" class="col-lg-11 graphic">
-                        <canvas id="bar" class="chart chart-bar"
-                                chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
-                                chart-colors="colors">
-                        </canvas>
-                    </div>
-                </div>
-
-                <div ng-if="question && !utilities.pie && utilities.vertical" class="row">
-                    <div id="chartKOBO" class="col-lg-11 graphic">
-                        <canvas id="bar" class="chart chart-bar"
-                                chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
-                                chart-colors="colors">
-                        </canvas>
-                    </div>
-                </div>
-
-                <div ng-if="!utilities.stacked && question && !utilities.pie && !utilities.vertical"
-                     class="row">
-                    <div id="chartKOBO" class="col-lg-11 graphic">
-                        <canvas id="base" class="chart-horizontal-bar"
-                                chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
-                                chart-colors="colors">
-                        </canvas>
-                    </div>
-                </div>
-
-                <div ng-if="question && !utilities.stacked && !utilities.priority && !utilities.normalized" class="row">
-                    <div id="chartKOBO" class="col-lg-6 graphic">
-                        <canvas id="pie" class="chart chart-pie"
-                                chart-data="data" chart-labels="labels" chart-options="options">
-                        </canvas>
-                    </div>
-                </div>
-                <div ng-if="question" class="col-lg-12">
-                    <a download="{{topic.name}}-{{question.text.text}}.png" id="btnpng" type="button"
-                       class="btn btn-default col-lg-4 col-lg-offset-4 btn-primary" ng-click="downloadPNG()">Descargar
-                        imagen</a>
-                </div>
-            </uib-tab>
-            <uib-tab index="1" heading="Respuestas Individuales">
-                <div class="row">
-                    <div class="form-group col-lg-3">
-                        <select class="form-control" ng-model='$parent.$parent.respondent'
-                                ng-options="item as 'encuestado '+(respondents.indexOf(item)+1) for item in respondents"
-                                ng-change="getAnswers(respondent)">
-                            <option value="">Seleccione un encuestado</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row" ng-if="respondent">
-                    <div class="col-lg-10 graphic">
-                        <uib-accordion>
-                            <div ng-repeat="topic in individualAnswers" uib-accordion-group class="panel-info"
-                                 heading="{{topic.name}}" ng-if="topic.keyvar !== 'problemas_severos'">
-                                <div ng-repeat="question in topic.questions" class="col-lg-12">
-                                    <h4>{{question.text.text}}</h4>
-                                    <div ng-if="!question.jsonUtilities.priority && !question.jsonUtilities.stacked && question.jsonUtilities.multiple">
-                                        <div ng-repeat="option in question.options" class="col-lg-6 margin-5"
-                                             ng-if="option.answers.length > 0">
-                                            <span class="label label-primary font-14">{{option.label}}</span>
-                                        </div>
-                                    </div>
-                                    <div ng-if="!question.jsonUtilities.priority && !question.jsonUtilities.stacked && !question.jsonUtilities.normalized">
-                                        <div ng-repeat="option in question.options" class="col-lg-6 margin-5"
-                                             ng-if="option.answers.length > 0">
-                                            <span class="label label-primary font-14">{{option.label}}</span>
-                                        </div>
-                                    </div>
-                                    <div ng-if="!question.jsonUtilities.priority && !question.jsonUtilities.stacked && question.jsonUtilities.normalized && !question.jsonUtilities.multiple">
-                                        <div ng-repeat="option in question.options" class="col-lg-6 margin-5"
-                                             ng-if="option.answers.length > 0">
-                                            <span class="label label-primary font-14">{{option.label}}</span>
-                                            <span class="label label-success font-14"
-                                                  ng-repeat="answer in option.answers"
-                                                  >{{answer.value}}</span>
-                                            </div>
-                                    </div>
-                                    <div ng-if="question.jsonUtilities.priority && !question.jsonUtilities.stacked">
-                                        <div ng-repeat="option in question.options" class="col-lg-6 margin-5"
-                                             ng-if="option.answers.length > 0">
-                                            <span class="label label-primary font-14">{{option.label}}:</span>
-                                            <span class="label label-success font-14">prioridad {{option.answers[0].value}}</span>
-                                        </div>
-                                    </div>
-                                    <div ng-if="question.jsonUtilities.stacked">
-                                        <div ng-repeat="option in question.options" class="col-lg-6 margin-5"
-                                             ng-if="option.parent == 0">
-                                            <span class="label label-primary font-14">{{option.label}}:</span>
-                                            <span class="label label-success font-14"
-                                                  ng-repeat="suboption in option.sub_options"
-                                                  ng-if="suboption.answers.length > 0">{{suboption.label}}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </uib-accordion>
-                    </div>
-                </div>
-            </uib-tab>
-            <uib-tab index="2" heading="Todas las preguntas" select="loadCompleteData()">
-                <div ng-if="showAllCharts" class="row container-print">
-                    <div ng-repeat="question in dataAll" class="col-lg-12 printed-graph">
+                    <div class="col-lg-3">
+                        <div class="col-lg-12">
+                            <h2><span class="label label-success">Total encuestados: {{questionRespondents}}</span></h2>
+                        </div>
+                        <div class="col-lg-12">
+                            <h2><button type="button" class="btn btn-info btn-block" ng-if="!options.showAllTooltips" ng-click="toogleTooltips()">Mostrar siempre etiquetas en gráfica</button></h2>
+                            <h2><button type="button" class="btn btn-info btn-block" ng-if="options.showAllTooltips" ng-click="toogleTooltips()">No mostrar siempre etiquetas en gráfica</button></h2>
+                        </div>
                         <div ng-if="question" class="col-lg-12">
-                            <h2>
-                                <span class="label label-success">Total encuestados: {{question.questionRespondents}}</span>
-                            </h2>
-                        </div>
-                        <div ng-if="question && !question.utilities.pie && question.utilities.stacked" class="col-lg-9 graphic">
-                            <canvas id="bar_{{question.id}}" class="chart chart-bar"
-                                    chart-data="question.data" chart-labels="question.labels"
-                                    chart-series="question.series" chart-options="question.options"
-                                    chart-colors="colors">
-                            </canvas>
-                        </div>
-
-                         <div ng-if="question && !question.utilities.pie && question.utilities.vertical" class="col-lg-9 graphic">
-                                <canvas id="bar_{{question.id}}" class="chart chart-bar"
-                                        chart-data="question.data" chart-labels="question.labels" chart-series="question.series" chart-options="question.options"
-                                        chart-colors="colors">
-                                </canvas>
-                        </div>
-
-                        <div ng-if="!question.utilities.stacked && question && !question.utilities.pie && !question.utilities.vertical" class="col-lg-9 graphic">
-                                <canvas id="base_{{question.id}}" class="chart-horizontal-bar"
-                                        chart-data="question.data" chart-labels="question.labels"
-                                        chart-series="question.series" chart-options="question.options"
-                                        chart-colors="colors">
-                                </canvas>
-                        </div>
-
-                        <div ng-if="question && !question.utilities.stacked && !question.utilities.priority && !question.utilities.normalized"
-                             class="col-lg-9 graphic">
-                                <canvas id="pie_{{question.id}}" class="chart chart-pie"
-                                        chart-data="question.data" chart-labels="question.labels"
-                                        chart-options="question.options">
-                                </canvas>
+                            <a download="{{topic.name}}-{{question.text.text}}.png" id="btnpng" type="button"
+                               class="btn btn-block btn-primary" ng-click="downloadPNG()">Descargar
+                                imagen</a>
                         </div>
                     </div>
+                    <div class="col-lg-9">
+                        <!--Graficas-->
+                        <div ng-if="question && !utilities.pie  && utilities.stacked" class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="bar" class="chart chart-bar"
+                                        chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+                                        chart-colors="colors">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        <div ng-if="question && !utilities.pie && utilities.vertical" class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="bar" class="chart chart-bar"
+                                        chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+                                        chart-colors="colors">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        <div ng-if="!utilities.stacked && question && !utilities.pie && !utilities.vertical"
+                             class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="base" class="chart-horizontal-bar"
+                                        chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+                                        chart-colors="colors">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        <div ng-if="question && !utilities.stacked && !utilities.priority && !utilities.normalized" class="row">
+                            <div id="chartKOBO" class="col-lg-7 graphic">
+                                <canvas id="pie" class="chart chart-pie"
+                                        chart-data="data" chart-labels="labels" chart-options="options">
+                                </canvas>
+                            </div>
+                        </div>
+                        <!--Fin Graficas-->
+                    </div>                    
                 </div>
-            </uib-tab>
-        </uib-tabset>
     </div>
 </div>
 
