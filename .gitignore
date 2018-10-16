@@ -47,5 +47,8 @@ Icon
 # Bower components
 /src/components
 
+# constants
+/src/js/constants.js
+
 # JetBrains
 .idea
