@@ -14,6 +14,7 @@ var paths = {
     scripts: 'src/js/**/*.*',
     styles: 'src/less/**/*.*',
     images: 'src/img/**/*.*',
+    images_leaflet: 'src/images/**/*.*',
     templates: 'src/templates/**/*.html',
     index: 'src/index.html',
     bower_fonts: 'src/components/**/*.{ttf,woff,eof,svg}',
@@ -47,11 +48,24 @@ gulp.task('copy-bower_fonts', function() {
 /**
  * Handle custom files
  */
-gulp.task('build-custom', ['custom-images', 'custom-js', 'custom-less', 'custom-templates']);
+gulp.task('build-custom', ['custom-images', 'custom-images-leaflet', 'custom-images-leaflet-dist', 'custom-js', 'custom-less', 'custom-templates']);
 
 gulp.task('custom-images', function() {
     return gulp.src(paths.images)
         .pipe(gulp.dest('dist/img'));
+});
+
+gulp.task('custom-images-leaflet', function() {
+    return gulp.src(paths.images_leaflet)
+        .pipe(gulp.dest('dist/images'));
+});
+
+gulp.task('custom-images-leaflet-dist', function() {
+    return gulp.src(paths.images_leaflet)
+        .pipe(rename({
+                dirname: '/images'
+            }))
+        .pipe(gulp.dest('dist/lib/css'));
 });
 
 gulp.task('custom-js', function() {

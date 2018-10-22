@@ -2,14 +2,15 @@
  * Master Controller
  */
 
-angular.module('RDash')
-    .controller('MasterCtrl', ['$scope', '$cookieStore', MasterCtrl]);
+angular.module('koboG')
+    .controller('MasterCtrl', ['$scope', '$cookieStore', '$state', '$timeout', MasterCtrl]);
 
-function MasterCtrl($scope, $cookieStore) {
+function MasterCtrl($scope, $cookieStore, $state, $timeout) {
     /**
      * Sidebar Toggle & Cookie Control
      */
     var mobileView = 992;
+    $scope.state = $state;
 
     $scope.getWidth = function() {
         return window.innerWidth;
@@ -36,4 +37,5 @@ function MasterCtrl($scope, $cookieStore) {
     window.onresize = function() {
         $scope.$apply();
     };
+    console.log($scope); 
 }

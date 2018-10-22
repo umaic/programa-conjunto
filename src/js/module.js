@@ -1,1 +1,1 @@
-angular.module('RDash', ['ui.bootstrap', 'ui.router', 'ngCookies']);
+angular.module('koboG', ['ui.bootstrap', 'ui.router', 'ngCookies', 'koboG.constants', 'koboG.services', 'chart.js', 'leaflet-directive','ngAnimate']);

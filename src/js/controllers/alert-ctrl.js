@@ -3,7 +3,7 @@
  */
 
 angular
-    .module('RDash')
+    .module('koboG')
     .controller('AlertsCtrl', ['$scope', AlertsCtrl]);
 
 function AlertsCtrl($scope) {

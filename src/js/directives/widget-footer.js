@@ -3,7 +3,7 @@
  */
 
 angular
-    .module('RDash')
+    .module('koboG')
     .directive('rdWidgetFooter', rdWidgetFooter);
 
 function rdWidgetFooter() {

@@ -1,6 +1,6 @@
 (function () {
     angular.module('koboG.services', [])
-        .factory("apiService", function ($http, $q, API_URL) {
+        .factory("apiService", ['$http', '$q', 'API_URL', function ($http, $q, API_URL) {
             var api = {};
 
             api.get = function (url) {
@@ -20,7 +20,7 @@
             return {
                 api: api
             };
-        })
+        }])
 
         .factory("graphService", function () {
 
@@ -31,7 +31,7 @@
                 options.tooltips = {
                     intersect:true,
                 }
-                if (!utilities.normalized && !utilities.priority && !utilities.stacked) {                  
+                if (utilities.txt || utilities.number || utilities.pie) {                  
                     options.title = {
                         display : true,
                         text : question.text.text,
@@ -41,80 +41,30 @@
                     options.legend = {
                         display : true,
                     }
-                } else if (utilities.normalized && !utilities.priority && !utilities.stacked && utilities.vertical) {
+                }else if(utilities.weighted) {
                     options.title = {
                         display : true,
                         text : question.text.text,
-                        fontSize : 15,
-                        padding: 0,
+                        fontSize : 20
                     };
                     options.legend = {
-                        display : true,
+                        display : false,
                     }
-                    options.scales = {
-                        yAxes : [{
-                          stacked: utilities.stacked,
-                          ticks: {            
-                               min: 0,
-                               max: 100,
-                               callback: function(value){return value+ "%"}
-                            },
-                        }]
-                    };
-                    options.tooltips = {
-                            enabled: true,
-                            callbacks: {
-                                label: function (item, data){
-                                    return data.datasets[item.datasetIndex].label +': ' + item.yLabel + '%'
-                                }
-                            }
+                    options.scale = {
+                        ticks: {
+                            beginAtZero: true,
+                            max: 10
                         }
+                    }
                 }else{
+                    options.legend = {
+                        display : false,
+                    }
                     options.title = {
                         display : true,
                         text : question.text.text,
                         fontSize : 20
                     };                    
-                    options.scales = {
-                            xAxes: [{
-                              stacked: utilities.stacked,
-                              ticks: {
-                                autoSkip: false,
-                              }
-                            }],
-                          };
-
-                    if (utilities.stacked) {
-                        options.legend = {
-                            display : true,
-                        }
-                    }
-
-                    if (utilities.normalized && !utilities.priority) {
-                        options.tooltips = {
-                            enabled: true,
-                            callbacks: {
-                                label: function (item, data){
-                                    return item.xLabel + '%'
-                                }
-                            }
-                        }
-                        options.scales.xAxes = [{
-                          stacked: utilities.stacked,
-                          ticks: {            
-                               min: 0,
-                               max: 100,
-                               callback: function(value){return value+ "%"}
-                            },
-                        }]
-                    }else{
-                        options.scales.yAxes = [{
-                          stacked: utilities.stacked,
-                          ticks:{
-                            beginAtZero:true,
-                          }
-                        }]
-                    };
                 }
                 
                 

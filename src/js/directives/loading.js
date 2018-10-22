@@ -4,7 +4,7 @@
  */
 
 angular
-    .module('RDash')
+    .module('koboG')
     .directive('rdLoading', rdLoading);
 
 function rdLoading() {

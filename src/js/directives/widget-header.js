@@ -3,7 +3,7 @@
  */
 
 angular
-    .module('RDash')
+    .module('koboG')
     .directive('rdWidgetHeader', rdWidgetTitle);
 
 function rdWidgetTitle() {

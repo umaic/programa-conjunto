@@ -1,27 +1,26 @@
 'use strict';
 
 /**
- * Route configuration for the RDash module.
+ * Route configuration for the koboG module.
  */
-angular.module('RDash').config(['$stateProvider', '$urlRouterProvider',
-    function($stateProvider, $urlRouterProvider) {
+angular.module('koboG').config(['$stateProvider', '$urlRouterProvider', '$logProvider',
+    function($stateProvider, $urlRouterProvider, $logProvider) {
 
         // For unmatched routes
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/map');
+        $logProvider.debugEnabled(false);
 
         // Application routes
         $stateProvider
-            .state('index', {
-                url: '/',
-                templateUrl: 'templates/dashboard.html'
-            })
-            .state('tables', {
-                url: '/tables',
-                templateUrl: 'templates/tables.html'
-            })
             .state('map', {
                 url: '/map',
-                templateUrl: 'templates/map.html'
+                templateUrl: 'templates/map.html',
+                controller: 'HomeCtrl'
+            })
+            .state('surveys', {
+                url: '/surveys/:borough_id/:survey_id',
+                templateUrl: 'templates/surveys.html',
+                controller: 'SurveysCtrl'
             });
     }
 ]);
