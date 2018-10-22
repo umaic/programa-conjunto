@@ -145,8 +145,7 @@ angular.module('koboG')
                             q.graph.options.title.display = false;
                         });
                     });
-                });
-                console.log($scope);                    
+                });                   
             }
         };
 
