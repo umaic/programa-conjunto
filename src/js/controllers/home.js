@@ -65,6 +65,14 @@ angular.module('koboG')
                         "<a style='color:white;' class='label label-info' ui-sref='surveys({borough_id:" 
                         + value.borough_id + "})'>Ver Resultados</a>";
                         mark.title = value.borough.department.name + ' - ' + value.borough.name;
+                        mark.icon = {
+                            iconUrl: 'images/marker-icon.png',
+                                shadowUrl: 'images/marker-shadow.png',
+                                iconSize: [25, 41],
+                                iconAnchor: [12, 41],
+                                popupAnchor: [1, -34],
+                                shadowSize: [41, 41]
+                            }
                         $scope.markers.push(mark);
                     }
                 });
