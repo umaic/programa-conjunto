@@ -81,7 +81,7 @@
                             </div>
                         </div>
 
-                        <div ng-if="question && !utilities.multiple && !utilities.number && !utilities.txt && !utilities.weighted && !utilities.pie" class="row">
+                        <div ng-if="question && !utilities.multiple && !utilities.number && !utilities.txt && !utilities.weighted && !utilities.pie && !utilities.liker" class="row">
                             <div id="chartKOBO" class="col-lg-12 graphic">
                                 <canvas id="bar" class="chart chart-horizontal-bar"
                                         chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
@@ -94,6 +94,15 @@
                             <div id="chartKOBO" class="col-lg-12 graphic">
                                 <canvas id="pie" class="chart chart-pie"
                                         chart-data="data" chart-labels="labels" chart-options="options">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        <div ng-if="question && utilities.liker" class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="line" class="chart chart-line"
+                                        chart-data="data" chart-labels="labels" chart-options="options"
+                                        chart-dataset-override="datasetOverride">
                                 </canvas>
                             </div>
                         </div>

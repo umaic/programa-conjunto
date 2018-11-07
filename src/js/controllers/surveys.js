@@ -126,6 +126,9 @@ angular.module('koboG')
                     }
                     $scope.utilities = res.data.utilities;
                     $scope.questionRespondents = res.data.respondent;
+                    if ($scope.utilities.liker) {
+                        $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+                    }
                     $scope.options = graphService.options(question, res.data.utilities);
                     console.log($scope);
                 });

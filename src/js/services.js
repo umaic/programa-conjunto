@@ -56,6 +56,40 @@
                             max: 10
                         }
                     }
+                }else if(utilities.liker) {
+                    options.title = {
+                        display : true,
+                        text : question.text.text,
+                        fontSize : 20
+                    };
+                    options.legend = {
+                        display : false,
+                    };
+                    options.scales = {
+                         yAxes: [
+                            {
+                              id: 'y-axis-1',
+                              type: 'linear',
+                              display: true,
+                              position: 'left'
+                            },
+                            {
+                              id: 'y-axis-2',
+                              type: 'linear',
+                              display: false,
+                              position: 'right'
+                            }
+                          ]
+                    };
+
+                    options.scales.xAxes = [
+                            {
+                                scaleLabel: {
+                                    padding: 1,
+                                }
+                            }                            
+                        ];
+                    
                 }else{
                     options.legend = {
                         display : false,
