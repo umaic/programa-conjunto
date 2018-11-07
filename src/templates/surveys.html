@@ -1,0 +1,190 @@
+<div class="row">
+    <div class="col-lg-11">
+        <a ng-if="survey_id != '' " class="label label-info" href="#/surveys/{{borough_id}}/">Volver a encuestas</a>
+        <h2 class="text-center text-info">{{localization.department.name}} - {{localization.name}}</h2>
+    </div>
+</div>
+
+<div ng-if="!survey_id" class="row">
+    <div class=" col-lg-10 col-lg-offset-1">
+        <div class="col-lg-6" ng-repeat="surv in surveys_borough">
+            <h2><a class="btn btn-info btn-block" ui-sref="surveys({borough_id:surv.borough_id, survey_id: surv.id})">{{surv.survey.name}}</a></h2>
+        </div>
+    </div>
+</div>
+
+<div ng-if="survey_id" class="row">
+    <div class="col-lg-12">
+        <uib-tabset active="active" justified="true">
+            <uib-tab index="0" heading="Respuestas Agrupadas">
+        <form name="formSurvey" class="col-lg-12" style="padding: 0">
+                    <div class="form-group col-lg-4">
+                        <select class="form-control" ng-model='topic'
+                                ng-options="item as item.name for item in topics"
+                                ng-change="check()">
+                            <option value="">Seleccione un área</option>
+                        </select>
+                    </div>
+                    <div ng-if="topic.questions" class="form-group col-lg-8">
+                        <select class="form-control" ng-model='question'
+                                ng-options="item as item.text.text for item in topic.questions"
+                                ng-change="getGraphData(question)">
+                            <option value="">Seleccione una pregunta</option>
+                        </select>
+                    </div>
+                </form>
+
+                <div ng-if="question" class="row">
+                    <div class="col-lg-12">
+                        <div class="col-lg-4">
+                            <h2><span class="label label-success">Total respuestas: {{questionRespondents}}</span></h2>
+                        </div>
+                        <div ng-if="question && !utilities.txt" class="col-lg-4">
+                            <h2><button type="button" class="btn btn-info btn-block" ng-if="!options.showAllTooltips" ng-click="toogleTooltips()">Mostrar siempre etiquetas en gráfica</button></h2>
+                            <h2><button type="button" class="btn btn-info btn-block" ng-if="options.showAllTooltips" ng-click="toogleTooltips()">No mostrar siempre etiquetas en gráfica</button></h2>
+                        </div>
+                        <div ng-if="question && !utilities.txt" class="col-lg-4">
+                            <h2><a download="{{topic.name}}-{{question.text.text}}.png" id="btnpng" type="button"
+                               class="btn btn-block btn-primary" ng-click="downloadPNG()">Descargar
+                                imagen</a></h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <!--Graficas-->
+                        <div ng-if="question && utilities.txt" class="row">
+                            <h2 ng-repeat="value in question.data.values">{{value}}</h2>
+                        </div>
+                        <div ng-if="question && utilities.number" class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="bar" class="chart chart-doughnut"
+                                        chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+                                        chart-colors="colors">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        <div ng-if="question && utilities.weighted" class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="bar" class="chart chart-radar"
+                                        chart-data="data" chart-labels="labels" chart-options="options"
+                                        chart-colors="colors">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        <div ng-if="question && utilities.multiple && !utilities.number && !utilities.pie" class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="bar" class="chart chart-bar"
+                                        chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+                                        chart-colors="colors">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        <div ng-if="question && !utilities.multiple && !utilities.number && !utilities.txt && !utilities.weighted && !utilities.pie && !utilities.liker" class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="bar" class="chart chart-horizontal-bar"
+                                        chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+                                        chart-colors="colors">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        <div ng-if="question && utilities.pie" class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="pie" class="chart chart-pie"
+                                        chart-data="data" chart-labels="labels" chart-options="options">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        <div ng-if="question && utilities.liker" class="row">
+                            <div id="chartKOBO" class="col-lg-12 graphic">
+                                <canvas id="line" class="chart chart-line"
+                                        chart-data="data" chart-labels="labels" chart-options="options"
+                                        chart-dataset-override="datasetOverride">
+                                </canvas>
+                            </div>
+                        </div>
+                        <!--Fin Graficas-->
+                    </div>                    
+                </div>
+            </uib-tab>
+            <uib-tab ng-if="topics[0].keyvar != 'general'" index="1" heading="Respuestas Individuales">
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <select class="form-control" ng-model='respondent'
+                                ng-options="item as item.rol for item in respondents"
+                                ng-change="getAnswers(respondent)">
+                            <option value="">Seleccione un encuestador</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" ng-if="respondent">
+                    <div class="col-lg-10 col-lg-offset-1 graphic">
+                        <uib-accordion>
+                            <div ng-repeat="topic in individualAnswers" uib-accordion-group class="panel-info"
+                                 heading="{{topic.name}}">
+                                <div ng-repeat="question in topic.questions" class="col-lg-12 panel panel-body panel-default">
+                                    <h4>{{question.text.text}}?</h4>
+                                    <div ng-if="question.jsonUtilities.txt">
+                                        <div ng-repeat="option in question.options" class="col-lg-6 margin-5"
+                                             ng-if="option.answers.length > 0">
+                                            <span class="label label-primary font-14">{{option.answers[0].value}}</span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="question.jsonUtilities.number">
+                                        <div ng-repeat="option in question.options" class="col-lg-6 margin-5"
+                                             ng-if="option.answers.length > 0">
+                                             <span class="label label-primary font-14">{{option.label}}:</span>
+                                             <span class="label label-success font-14"
+                                                  ng-repeat="answer in option.answers">
+                                                    {{answer.value}}</span>
+                                        </div>
+                                        <div id="chartKOBO" class="col-lg-10 graphic-nf">
+                                            <canvas id="bar" class="chart chart-doughnut"
+                                                    chart-data="question.graph.values" chart-labels="question.graph.labels" chart-series="question.graph.series" chart-options="question.graph.options"
+                                                    chart-colors="colors">
+                                            </canvas>
+                                        </div>
+                                    </div>
+                                    <div ng-if="(question.jsonUtilities.multiple && !question.jsonUtilities.number) || (!question.jsonUtilities.multiple && !question.jsonUtilities.number && !question.jsonUtilities.number && !question.jsonUtilities.txt && !question.jsonUtilities.weighted)">
+                                        <div ng-repeat="option in question.options" class="col-lg-6 margin-5"
+                                             ng-if="option.answers.length > 0">
+                                            <span class="label label-primary font-14">{{option.label}}</span>
+                                        </div>
+                                        <div id="chartKOBO" class="col-lg-12 graphic-nf">
+                                            <canvas id="bar" class="chart chart-horizontal-bar"
+                                                    chart-data="question.graph.values" chart-labels="question.graph.labels" chart-series="question.graph.series" chart-options="question.graph.options"
+                                                    chart-colors="colors">
+                                            </canvas>
+                                        </div>
+                                    </div>
+                                    <div ng-if="question.jsonUtilities.weighted">
+                                        <div ng-repeat="option in question.options" class="col-lg-6 margin-5"
+                                             ng-if="option.answers.length > 0">
+                                            <span class="label label-primary font-14">{{option.label}}</span>
+                                            <span class="label label-success font-14"
+                                                  ng-repeat="answer in option.answers">
+                                                    {{answer.value}}</span>
+                                        </div>
+                                        <div id="chartKOBO" class="col-lg-10 graphic-nf">
+                                            <canvas id="bar" class="chart chart-radar"
+                                                    chart-data="question.graph.values" chart-labels="question.graph.labels" chart-options="question.graph.options"
+                                                    chart-colors="colors">
+                                            </canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-accordion>
+                    </div>
+                </div>
+            </uib-tab>
+    </div>
+</div>
+
+<h1 class="text-center" ng-if="!question && !individualAnswers"><span class="label label-warning"> No se ha seleccionado nada </span>
+</h1>
+
+

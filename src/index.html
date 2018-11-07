@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" ng-app="koboG">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Graficas Kobo</title>
+  <!-- STYLES -->
+  <!-- build:css lib/css/main.min.css -->
+  <link rel="stylesheet" type="text/css" href="components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="components/rdash-ui/dist/css/rdash.min.css">
+  <link rel="stylesheet" href="custom_components/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="less/app.css">
+  <!-- endbuild -->
+  <!-- SCRIPTS -->
+  <!-- build:js lib/js/main.min.js -->
+  <script type="text/javascript" src="components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="components/angular-cookies/angular-cookies.min.js"></script>
+  <script type="text/javascript" src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script type="text/javascript" src="components/chart.js/dist/Chart.min.js"></script>
+  <script type="text/javascript" src="components/angular-chart.js/dist/angular-chart.min.js"></script>
+  <script src="custom_components/angular-leaflet/angular-leaflet-directive.min.js"></script>
+  <script src="custom_components/angular-animate.js"></script>
+  <script src="custom_components/html2canvas/dist/html2canvas.min.js"></script>
+  <script src="custom_components/html2canvas/dist/html2canvas.svg.min.js"></script>
+  <script src="custom_components/leaflet/dist/leaflet-src.js"></script>
+  <!-- endbuild -->
+  <!-- Custom Scripts -->
+  <script type="text/javascript" src="js/dashboard.min.js"></script>
+</head>
+<body ng-controller="MasterCtrl">
+  <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar">
+        <li class="sidebar-main">
+          <a ng-click="toggleSidebar()">
+            Panel
+            <span class="menu-icon glyphicon glyphicon-transfer"></span>
+          </a>
+        </li>
+        <li class="sidebar-title"><span>Navegación</span></li>
+        <li class="sidebar-list">
+          <a href="#/map">Mapa <span class="menu-icon fa fa-map"></span></a>
+        </li>
+        <li class="sidebar-list" ng-hide="state.current.name == 'map'">
+          <a href="#/surveys/">Respuestas<span class="menu-icon fa fa-bar-chart"></span></a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        
+      </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <div id="content-wrapper">
+      <div class="page-content">
+
+        <!-- Header Bar -->
+        <div class="row header">
+          <div class="col-xs-6">
+            <div class="meta">
+              <div class="page">
+                Programa Conjunto
+              </div>
+              <!-- <div class="breadcrumb-links">
+                Home / Dashboard
+              </div> -->
+            </div>
+          </div>
+          <div class="col-xs-3" style="width: 21%; margin-top: 5px;">
+            <img class="img-responsive" src="img/logo_21.png">
+          </div>
+          <div class="col-xs-3" style="width: 21%;">
+            <img class="img-responsive" src="img/logo_22.png">
+          </div>
+          <div class="col-xs-1" style="width: 5%; margin-top: 11px;">
+            <img class="img-responsive" src="img/logo_23.png">
+          </div>
+        </div>
+        <!-- End Header Bar -->
+
+        <!-- Main Content -->
+        <div ui-view></div>
+        <div class="row">
+          <div class="col-xs-3 center-block">
+            <img class="img-responsive" src="img/conf_paz.png">
+          </div>
+        </div>
+      </div><!-- End Page Content -->
+    </div><!-- End Content Wrapper -->
+  </div><!-- End Page Wrapper -->
+</body>
+</html>
